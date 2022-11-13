@@ -10,8 +10,7 @@ class Custom_s(Client):
     
     async def on_ready(self):
         print("\n".join([
-            f"Logged in as {client.user} (ID: {client.user.id})",
-            "",
+            f"Logged in as {client.user} (ID: {client.user.id})\n",
             f"Use this URL to invite {client.user} to your server:",
             f"https://discord.com/api/oauth2/authorize?client_id={client.user.id}&scope=applications.commands%20bot"
         ]))
