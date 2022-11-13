@@ -1,8 +1,6 @@
 from discord import app_commands, Intents, Client, Interaction
-from dotenv import load_dotenv
 import os
 
-load_dotenv('./.env')
 TOKEN =  os.getenv("TOKEN")
 
 class Custom_s(Client):
