@@ -1,1 +1,1 @@
-web:python main.py
+map:web:python main.py
