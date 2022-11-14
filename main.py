@@ -37,13 +37,6 @@ client = Custom_s(intents=intents)
 
 class Feedback(discord.ui.Modal, title='Feedback'):
 
-    name = discord.ui.TextInput(
-        label="Can you tell us your username?",
-        style=discord.TextStyle.short,
-        required=True,
-        placeholder="Your username here..."
-    )
-
     feedback = discord.ui.TextInput(
         label='What is your feedback?',
         style=discord.TextStyle.long,
