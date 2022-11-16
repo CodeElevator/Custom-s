@@ -11,28 +11,28 @@ class Math(commands.Cog):
         """
             Adds two numbers together.
         """
-        await interaction.response.send_message(f"The result is {num1 + num2}", ephemeral=True)
+        await interaction.response.send_message(f"The result is {num1 + num2}")
 
-    @app_commands.command(name="substract")
-    async def add(self, interaction: Interaction, num1: int, num2: int):
+    @app_commands.command(name="sub")
+    async def sub(self, interaction: Interaction, num1: int, num2: int):
         """
             substracts two numbers together.
         """
-        await interaction.response.send_message(f"The result is {num1 - num2}", ephemeral=True)
+        await interaction.response.send_message(f"The result is {num1 - num2}")
 
-    @app_commands.command(name="multply")
-    async def add(self, interaction: Interaction, num1: int, num2: int):
+    @app_commands.command(name="mul")
+    async def mul(self, interaction: Interaction, num1: int, num2: int):
         """
             Multiplies two numbers together.
         """
-        await interaction.response.send_message(f"The result is {num1 * num2}", ephemeral=True)
+        await interaction.response.send_message(f"The result is {num1 * num2}")
 
-    @app_commands.command(name="divide")
-    async def add(self, interaction: Interaction, num1: int, num2: int):
+    @app_commands.command(name="div")
+    async def div(self, interaction: Interaction, num1: int, num2: int):
         """
             Divides two numbers together.
         """
-        await interaction.response.send_message(f"The result is {num1 / num2}", ephemeral=True)
+        await interaction.response.send_message(f"The result is {num1 / num2}")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Math(bot))
