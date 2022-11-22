@@ -1,9 +1,8 @@
-from discord import app_commands, Intents, Interaction, Embed, Object
+from discord import Intents, Interaction, Embed
 from discord.ext import commands
 from dotenv import load_dotenv
-from datetime import datetime
-import sqlite3
 import traceback
+import sqlite3
 import discord
 import logging
 import os
@@ -18,8 +17,9 @@ class Custom_s(commands.Bot):
         super().__init__(intents=intents,command_prefix="$")
     
         self.inital_extensions = [
-            "cogs.misc.math",
-            "cogs.moderation.warns",
+            "cogs.fun.memes",
+            "cogs.moderation.moderation",
+            "cogs.moderation.reactionroles"
         ]
     
     async def on_guild_join(self, guild: discord.Guild):
@@ -31,15 +31,14 @@ class Custom_s(commands.Bot):
         print(f"Guild left: {guild.name}\n\tID: {guild.id}")
 
     async def on_ready(self):
-        db = sqlite3.connect("./cogs/moderation/warnings.sqlite")
+        db = sqlite3.connect("DB.sqlite")
         cur = db.cursor()
         cur.execute(
             """
-                CREATE TABLE IF NOT EXISTS warn(
-                    user INTEGER,
-                    reason TEXT,
-                    time INTEGER,
-                    guild INTEGER
+                CREATE TABLE IF NOT EXISTS rolereact(
+                    role INTEGER,
+                    msg_id INTEGER,
+                    emoji TEXT
                 )
             """
         )
