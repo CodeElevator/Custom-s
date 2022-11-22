@@ -30,6 +30,24 @@ class Custom_s(commands.Bot):
         logger.info(f"Guild left: {guild.name}\n\tID: {guild.id}")
         print(f"Guild left: {guild.name}\n\tID: {guild.id}")
 
+    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        channel = self.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        member = self.get_user(payload.user_id)
+        emoji = str(self.get_emoji(payload.emoji))
+        db = sqlite3.connect("DB.sqlite")
+        cur = db.cursor()
+        result = cur.execute("SELECT role FROM rolereact WHERE msg_id = ? AND emoji = ?",(str(message), emoji))
+        r = result.fetchall()
+        for entry in r:
+            message_id = payload.message_id
+            if message_id == entry[1]:
+                guild = self.get_guild(payload.guild_id)
+            if str(payload.emoji) == entry[2]:
+                role = discord.utils.get(guild.roles, id=entry[0])
+                await member.add_roles(role)
+                await message.remove_reaction(member, emoji)
+
     async def on_ready(self):
         db = sqlite3.connect("DB.sqlite")
         cur = db.cursor()
