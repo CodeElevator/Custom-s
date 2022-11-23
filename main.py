@@ -6,6 +6,8 @@ import sqlite3
 import discord
 import logging
 import os
+import discordSuperUtils
+import aiosqlite
 
 logger = logging.getLogger("Custom_s")
 logging.basicConfig(level=logging.NOTSET, filename="custom-s.log")
@@ -20,7 +22,6 @@ class Custom_s(commands.Bot):
             "cogs.fun.memes",
             "cogs.bot_uh_things.infos",
             "cogs.moderation.moderation",
-            "cogs.moderation.reactionroles"
         ]
     
     async def on_guild_join(self, guild: discord.Guild):
@@ -32,20 +33,6 @@ class Custom_s(commands.Bot):
         print(f"Guild left: {guild.name}\n\tID: {guild.id}")
 
     async def on_ready(self):
-        db = sqlite3.connect("DB.sqlite")
-        cur = db.cursor()
-        cur.execute(
-            """
-                CREATE TABLE IF NOT EXISTS rolereact(
-                    role INTEGER,
-                    txt TEXT,
-                    btn_txt TEXT,
-                    btn_color TEXT,
-                    emoji TEXT
-                )
-            """
-        )
-        db.commit()
         print("\n".join([
             f"Logged in as {self.user} (ID: {self.user.id})\n",
             f"Use this URL to invite {self.user}:",
@@ -62,6 +49,19 @@ intents = Intents.all()
 intents.messages = True
 
 client = Custom_s(intents=intents)
+ReactionManager = discordSuperUtils.ReactionManager(client)
+
+@ReactionManager.event()
+async def on_reaction_event(guild, channel, message, member, emoji):
+    """This event will be run if there isn't a role to add to the member."""
+
+    if ...:
+        print("Created ticket.")
+
+@client.event
+async def on_ready():
+    database = discordSuperUtils.DatabaseManager.connect(await aiosqlite.connect("DB.sqlite"))
+    await ReactionManager.connect_to_database(database, ["reaction_roles"])
 
 class Feedback(discord.ui.Modal, title='Feedback'):
 
@@ -92,5 +92,26 @@ async def feedback(interaction: Interaction):
     """Submit feedback"""
     logger.info("heya, someone did a feedback")
     await interaction.response.send_modal(Feedback())
+
+@client.hybrid_command()
+async def reaction(
+    ctx : commands.Context, message, emoji: str, remove_on_reaction, role: discord.Role = None
+):
+    """
+    Does a reaction role.
+
+    Args:
+        message (Any): The message ID of the role reaction.
+        emoji (str): The emoji of the reaction.
+        remove_on_reaction (int): Between 0 and 1, if it's 1, it will remove the reaction  after giving the role.
+        role (discord.Role): The role of the reaction.
+    """
+    message = await ctx.channel.fetch_message(message)
+
+    await ReactionManager.create_reaction(
+        ctx.guild, message, role, emoji, remove_on_reaction
+    )
+    await ctx.defer(ephemeral=True)
+    await ctx.send("Added your role!")
 
 client.run(TOKEN)
