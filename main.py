@@ -8,6 +8,7 @@ import logging
 import os
 import discordSuperUtils
 import aiosqlite
+from discord_timestamps import format_timestamp
 
 logger = logging.getLogger("Custom_s")
 logging.basicConfig(level=logging.NOTSET, filename="custom-s.log")
@@ -122,7 +123,7 @@ async def uinfo(interaction : Interaction, member : discord.Member):
         title=f"Infos of {member}"
     )
     em.set_author(name=interaction.user)
-    em.set_thumbnail(url=interaction.user.avatar.url)
+    em.set_thumbnail(url=member.avatar.url)
     roles = []
     for role in member.roles:
         if role.name != "@everyone":
@@ -131,10 +132,10 @@ async def uinfo(interaction : Interaction, member : discord.Member):
     em.add_field(name="ID: ", value=member.id)
     em.add_field(name="Name: ", value=member.display_name)
     em.add_field(name="Bot: ", value="🧑" if not member.bot else "🤖")
-    em.add_field(name=f"Roles: ({len(roles)}", value=b, inline=False)
+    em.add_field(name=f"Roles: ({len(roles)})", value=b, inline=False)
     em.add_field(name="Top Role: ", value=member.top_role.mention, inline=False)
-    em.add_field(name="Account Creation Date: ", value=member.created_at)
-    em.add_field(name="Server Joined At: ", value=member.joined_at)
+    em.add_field(name="Account Creation Date: ", value=format_timestamp(member.created_at.timestamp()))
+    em.add_field(name="Server Joined At: ", value=format_timestamp(member.joined_at.timestamp()))
     await interaction.response.send_message(embed=em)
 
 client.run(TOKEN)

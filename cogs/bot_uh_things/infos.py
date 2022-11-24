@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+from discord_timestamps import format_timestamp
 
 class Infos(commands.Cog):
     """
@@ -26,8 +27,8 @@ class Infos(commands.Cog):
         em.add_field(name="Bot: ", value="🧑" if not user.bot else "🤖")
         em.add_field(name=f"Roles: ({len(roles)}", value=b, inline=False)
         em.add_field(name="Top Role: ", value=user.top_role.mention, inline=False)
-        em.add_field(name="Account Creation Date: ", value=user.created_at)
-        em.add_field(name="Server Joined At: ", value=user.joined_at)
+        em.add_field(name="Account Creation Date: ", value=format_timestamp(user.created_at.timestamp()))
+        em.add_field(name="Server Joined At: ", value=format_timestamp(user.joined_at.timestamp()))
         await interaction.response.send_message(embed=em)
 
 
