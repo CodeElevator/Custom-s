@@ -62,6 +62,7 @@ async def on_reaction_event(guild, channel, message, member, emoji):
 async def on_ready():
     database = discordSuperUtils.DatabaseManager.connect(await aiosqlite.connect("DB.sqlite"))
     await ReactionManager.connect_to_database(database, ["reaction_roles"])
+    print("Test - But the bot is ready!")
 
 class Feedback(discord.ui.Modal, title='Feedback'):
 
