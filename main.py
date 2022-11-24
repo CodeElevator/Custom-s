@@ -132,5 +132,6 @@ async def uinfo(interaction : Interaction, member : discord.Member):
     em.add_field(name="Top Role: ", value=member.top_role.mention, inline=False)
     em.add_field(name="Account Creation Date: ", value=member.created_at)
     em.add_field(name="Server Joined At: ", value=member.joined_at)
+    await interaction.response.send_message(embed=em)
 
 client.run(TOKEN)

@@ -25,6 +25,7 @@ class Infos(commands.Cog):
         em.add_field(name="Top Role: ", value=user.top_role.mention, inline=False)
         em.add_field(name="Account Creation Date: ", value=user.created_at)
         em.add_field(name="Server Joined At: ", value=user.joined_at)
+        await interaction.response.send_message(embed=em)
 
 
     @app_commands.command(name="botinfo", description="Bot infos!")
