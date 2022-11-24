@@ -17,6 +17,9 @@ class Infos(commands.Cog):
         em.set_author(name=interaction.user)
         em.set_thumbnail(url=interaction.user.avatar.url)
         roles = []
+        for role in user.roles:
+            if role.name != "@everyone":
+                roles.append(role.mention)
         b = ','.join(roles)
         em.add_field(name="ID: ", value=user.id)
         em.add_field(name="Name: ", value=user.display_name)
