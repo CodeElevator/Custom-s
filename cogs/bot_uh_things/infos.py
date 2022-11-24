@@ -8,6 +8,24 @@ class Infos(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
+    
+    async def _userinfo(self, interaction : discord.Interaction, user : discord.Member):
+        em = discord.Embed(
+            color=discord.Colour.random(),
+            title=f"Infos of {user}"
+        )
+        em.set_author(name=interaction.user)
+        em.set_thumbnail(url=interaction.user.avatar.url)
+        roles = []
+        b = ','.join(roles)
+        em.add_field(name="ID: ", value=user.id)
+        em.add_field(name="Name: ", value=user.display_name)
+        em.add_field(name="Bot: ", value="🧑" if not user.bot else "🤖")
+        em.add_field(name=f"Roles: ({len(roles)}", value=b, inline=False)
+        em.add_field(name="Top Role: ", value=user.top_role.mention, inline=False)
+        em.add_field(name="Account Creation Date: ", value=user.created_at)
+        em.add_field(name="Server Joined At: ", value=user.joined_at)
+
 
     @app_commands.command(name="botinfo", description="Bot infos!")
     async def _botinfo(self, interaction : discord.Interaction):
@@ -27,5 +45,12 @@ class Infos(commands.Cog):
 
         em.set_footer(text="Custom's - Made with discord.py")
         await interaction.response.send_message(embed=em)
+    
+    @app_commands.command(name="userinfo")
+    async def _uinfo(self, interaction : discord.Interaction, member : discord.Member = None):
+        if member is None:
+            member = interaction.user
+        await self._userinfo(interaction, member)
+
 async def setup(bot):
     await bot.add_cog(Infos(bot))

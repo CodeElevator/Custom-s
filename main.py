@@ -114,4 +114,22 @@ async def reaction(
     await ctx.defer(ephemeral=True)
     await ctx.send("Added your role!")
 
+@client.tree.context_menu(name="Infos")
+async def uinfo(interaction : Interaction, member : discord.Member):
+    em = discord.Embed(
+        color=discord.Colour.random(),
+        title=f"Infos of {member}"
+    )
+    em.set_author(name=interaction.user)
+    em.set_thumbnail(url=interaction.user.avatar.url)
+    roles = []
+    b = ','.join(roles)
+    em.add_field(name="ID: ", value=member.id)
+    em.add_field(name="Name: ", value=member.display_name)
+    em.add_field(name="Bot: ", value="🧑" if not member.bot else "🤖")
+    em.add_field(name=f"Roles: ({len(roles)}", value=b, inline=False)
+    em.add_field(name="Top Role: ", value=member.top_role.mention, inline=False)
+    em.add_field(name="Account Creation Date: ", value=member.created_at)
+    em.add_field(name="Server Joined At: ", value=member.joined_at)
+
 client.run(TOKEN)
