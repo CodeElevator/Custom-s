@@ -153,6 +153,8 @@ class Moderation(commands.Cog):
         channel = interaction.guild.get_channel(channel.id)
         await channel.send("Ping: " + ping.mention if ping is not None else "No pings.", embed=embed)
         await interaction.response.send_message("Announcement send!", ephemeral=True)
+    
+    
 
 
 async def setup(bot : commands.Bot):

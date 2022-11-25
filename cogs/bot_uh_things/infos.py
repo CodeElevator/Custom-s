@@ -2,6 +2,14 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from discord_timestamps import format_timestamp
+import platform
+import distro
+import time
+import psutil
+
+def uptime():
+	return round((time.time() - psutil.boot_time()) / 60, 2)
+
 
 class Infos(commands.Cog):
     """
@@ -39,11 +47,18 @@ class Infos(commands.Cog):
             title="Infos of the bot",
         )
         em.set_author(name=interaction.user, icon_url=interaction.user.avatar.url)
-        em.description = 'A simple bot'
+        em.description = self.bot.description
+        memoryused = round(psutil.virtual_memory().used / 1000000000, 2)
+        memory = f"{memoryused}GB"
         em.add_field(name="Servers", value=len(self.bot.guilds))
         em.add_field(name="Online Users", value=str(len({m.id for m in self.bot.get_all_members() if m.status is not discord.Status.offline})))
         em.add_field(name='Total Amount Of Users', value=len(self.bot.users))
-        em.add_field(name="Library", value=f"discord.py {discord.__version__}")
+        em.add_field(name="Library", value=f"Discord.py {discord.__version__}")
+        em.add_field(name="Python Version:", value=platform.python_version())
+        em.add_field(name="Operating System:", value=distro.id() if distro.id() != "" else "Windows (Bot In Development)")
+        em.add_field(name="Kernel Version:", value=platform.platform(), inline=False)
+        em.add_field(name="RAM Used:", value=memory, inline=False)
+        em.add_field(name="Uptime:", value=f"{uptime()} minutes.", inline=False)
         em.add_field(name="Bot Latency", value=f"{self.bot.ws.latency * 1000:.0f} ms")
         em.add_field(name="Invite", value=f"In my profile")
         em.add_field(name='GitHub', value='[Click here](https://github.com/CodeElevator/Custom-s)')

@@ -17,7 +17,7 @@ TOKEN =  os.getenv("TOKEN")
 
 class Custom_s(commands.Bot):
     def __init__(self, *, intents: Intents):
-        super().__init__(intents=intents,command_prefix="$")
+        super().__init__(intents=intents,command_prefix="$", description="Multipurpose bot, for a lot of things you'll probably need...")
     
         self.inital_extensions = [
             "cogs.fun.memes",
@@ -97,7 +97,7 @@ async def feedback(interaction: Interaction):
 
 @client.hybrid_command()
 async def reaction(
-    ctx : commands.Context, message, emoji: str, remove_on_reaction, role: discord.Role = None
+    ctx : commands.Context, message, emoji: str, role: discord.Role = None
 ):
     """
     Does a reaction role.
@@ -105,13 +105,12 @@ async def reaction(
     Args:
         message (Any): The message ID of the role reaction.
         emoji (str): The emoji of the reaction.
-        remove_on_reaction (int): Between 0 and 1, if it's 1, it will remove the reaction  after giving the role.
         role (discord.Role): The role of the reaction.
     """
     message = await ctx.channel.fetch_message(message)
 
     await ReactionManager.create_reaction(
-        ctx.guild, message, role, emoji, remove_on_reaction
+        ctx.guild, message, role, emoji, 0
     )
     await ctx.defer(ephemeral=True)
     await ctx.send("Added your role!")
