@@ -22,6 +22,7 @@ class Custom_s(commands.Bot):
         self.inital_extensions = [
             "cogs.fun.memes",
             "cogs.bot_uh_things.infos",
+            "cogs.moderation.welcoming",
             "cogs.moderation.moderation",
         ]
     
